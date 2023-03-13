@@ -1,0 +1,119 @@
+<div class="pt-20 pb-6 lg:pt-24 lg:pb-12">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-4">
+            <div class="col-span-3 mb-4 lg:mb-0">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <h2 class="p-3 font-bold">Agregar producto</h2>
+
+                    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+                        <div class="p-3">
+                            <div class="mb-3">
+                                <label for="producto">Producto<span class="text-red-500">*</span></label>
+                                <input id="producto" type="text" maxlength="100" formControlName="producto" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="mb-3">
+                                    <label for="existenciaInicial">Existencia inicial</label>
+                                    <input id="existenciaInicial" type="number" min="0" step="1" formControlName="existenciaInicial" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                </div>
+    
+                                <div class="mb-3">
+                                    <label for="existenciaActual">Existencia actual</label>
+                                    <input id="existenciaActual" type="number" min="0" step="1" formControlName="existenciaActual" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="precioActual">Precio actual</label>
+                                <input id="precioActual" type="number" min="0" step="0.01" formControlName="precioActual" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            </div>
+
+                            <div class="text-right">
+                                <button type="button" (click)="resetData()" class="underline text-sm text-regal-blue-600 hover:text-regal-blue-800 mr-3">
+                                    Limpiar
+                                </button>
+
+                                <button type="submit" [disabled]="!productForm.valid" class="inline-flex items-center px-4 py-2 bg-regal-blue-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-regal-blue-700 active:bg-regal-blue-900 focus:outline-none focus:border-regal-blue-900 focus:ring ring-regal-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
+                                    Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-span-9">
+                <div class="flex flex-col h-full">
+                    <div class="flex items-center justify-between w-full" *ngIf="productos.length>0">
+                        <div class="mb-3">
+                            <h2>Productos ({{filteredProductos.length}})</h2>
+                        </div>
+                        <div class="mb-3">
+                            <input type="search" name="search" [(ngModel)]="search" placeholder="Buscar..." class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        </div>
+                    </div>
+
+                    <div class="w-full h-full">
+                        <div class="shadow-sm sm:rounded-lg bg-white overflow-hidden" *ngIf="filteredProductos.length>0; else filteredProductosElse">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left text-gray-500">
+                                    <thead>
+                                        <tr class="text-xs text-gray-700 uppercase bg-gray-50">
+                                            <th class="px-6 py-3 text-center">Código</th>
+                                            <th class="px-6 py-3 text-center">Producto</th>
+                                            <th class="px-6 py-3 text-center">Existencia inicial</th>
+                                            <th class="px-6 py-3 text-center">Existencia actual</th>
+                                            <th class="px-6 py-3 text-center">Precio actual</th>
+                                            <th class="px-6 py-3 text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let producto of filteredProductos" class="border-b" >
+                                            <th class="border-bottom p-3">{{producto.idProducto}}</th>
+                                            <td class="border-bottom p-3">
+                                                {{producto.producto}}
+                                            </td>
+                                            <td class="border-bottom p-3" align="right">{{producto.existenciaInicial | number }}</td>
+                                            <td class="border-bottom p-3" align="right">{{producto.existenciaActual | number }}</td>
+                                            <td class="border-bottom p-3" align="right">{{producto.precioActual | currency: 'Q' }}</td>
+                                            <td class="border-bottom p-3" align="right" width="85">
+                                                <button (click)="loadData(producto)" title="Editar" class="hover:text-yellow-700 mr-3">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                                    </svg>
+                                                </button>
+
+                                                <button (click)="handlerDelete(producto.idProducto)" title="Eliminar" class="hover:text-red-700">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                                    </svg>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <ng-template #filteredProductosElse>
+                            <div class="flex items-center justify-center h-full py-5">
+                                <div *ngIf="productos.length>0; else productoElse">
+                                    <div>
+                                        <img src="/assets/images/search.svg" alt="Búsqueda sin resultados" class="mb-3 w-52 mx-auto">
+                                        <p class="text-center text-gray-500">No se encontraron resultados en la búsqueda <strong>{{search}}</strong>.</p>
+                                    </div>
+                                </div>
+                                <ng-template #productoElse>
+                                    <div>
+                                        <img src="/assets/images/producto.svg" alt="No encontrado" class="mb-3 w-52 mx-auto">
+                                        <p class="text-center text-gray-500">Aún no tienes <strong>productos</strong> registrados</p>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'universales';
+  menuMobile: boolean = false;
+
+  handlerMenuMobile($event: MouseEvent) {
+    this.menuMobile = !this.menuMobile;
+  }
+
+  handlercloseMenuMobile($event: MouseEvent) {
+    this.menuMobile = false;
+  }
 }
